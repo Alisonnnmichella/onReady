@@ -1,6 +1,6 @@
 package Modelo;
 
-public abstract class Vehiculo {
+public abstract class Vehiculo implements Comparable<Vehiculo>{
     private String marca;
     private String modelo;
     private Double precio;
@@ -24,8 +24,16 @@ public abstract class Vehiculo {
     }
     public abstract String presentarCaracteristicaVehiculo();
 
-    public String presentarse(){
-        return "Marca:"+marca+" // "+"Modelo: "+modelo+" // "+presentarCaracteristicaVehiculo()+" // "+"Precio: "+precio;
-    };
+    public void presentarse(){
+        System.out.println("Marca:"+marca+" // "+"Modelo: "+modelo+" // "+presentarCaracteristicaVehiculo()+" // "+"Precio: "+precio);
+    }
+
+    @Override
+    public int compareTo(Vehiculo otherVehiculo){
+        return Double.compare(otherVehiculo.getPrecio(),this.getPrecio());
+    }
+    public String toStringMarcaYModelo(){
+        return marca+" "+ modelo;
+    }
 
 }

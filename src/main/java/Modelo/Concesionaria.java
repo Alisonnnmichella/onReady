@@ -18,65 +18,28 @@ public class Concesionaria {
         vehiculos.add(new Automovil("Peugeot","208",5,250000.00));
         vehiculos.add(new Moto("Yamaha","YBR",160,80500.50));
     }
-    public double menorPrecioDeVehiculos(){
-        OptionalDouble minimo=vehiculos.stream().mapToDouble(vehiculo->vehiculo.getPrecio()).min();
-        if(minimo==null)
-            throw new RuntimeException("No se pudo encontrar el menor precio de un vehiculo");
-        return minimo.getAsDouble();
+    public List<Vehiculo> listaOrdenadaDeMayorAMenor(){
+        List<Vehiculo> vehiculosDeMayorAMenorPrecio=new ArrayList<>();
+        vehiculos.forEach(vehiculo -> vehiculosDeMayorAMenorPrecio.add(vehiculo));
+        Collections.sort(vehiculosDeMayorAMenorPrecio);
+        return vehiculosDeMayorAMenorPrecio;
     }
-    private Vehiculo getVehiculoMasEconomico(){
-        return vehiculos.stream().filter(vehiculo -> vehiculo.getPrecio()==menorPrecioDeVehiculos())
-                .collect(Collectors.toList()).get(0);
+    public void mostrarVehiculos(){
+        vehiculos.forEach(vehiculo -> vehiculo.presentarse());
     }
-    public void mostrarVehiculoMasEconomico() {
-        Vehiculo vehiculoMasEconomico=getVehiculoMasEconomico();
-        System.out.println("Vehiculo mas barato: "+vehiculoMasEconomico.getMarca()+" "+vehiculoMasEconomico.getModelo());
+    public void mostrarVehiculoMarCaro(){
+        System.out.println("Vehículo más barato: "+listaOrdenadaDeMayorAMenor().get(0).toStringMarcaYModelo());
     }
-    public double mayorPrecioDeVehiculos(){
-        OptionalDouble mayor=vehiculos.stream().mapToDouble(vehiculo->vehiculo.getPrecio()).max();
-        if(mayor==null)
-            throw new RuntimeException("No se pudo encontrar el menor precio de un vehiculo");
-        return mayor.getAsDouble();
+    public void mostrarVehiculoMasBarato(){
+        System.out.println("Vehículo más caro: "+listaOrdenadaDeMayorAMenor().get(vehiculos.size()-1).toStringMarcaYModelo());
     }
-    private Vehiculo getVehiculoMenosEconomico(){
-      return vehiculos.stream().filter(vehiculo -> vehiculo.getPrecio()==mayorPrecioDeVehiculos())
-                .collect(Collectors.toList()).get(0);
+    public void mostrarVehiculoQueContienenLetra(String letra){
+        System.out.println("Vehiculo que contiene en el modelo la letra "+letra+" "+vehiculos.stream().filter(vehiculo -> vehiculo.getMarca().contains(letra))
+        .collect(Collectors.toList()).get(0).toStringMarcaYModelo());
     }
-    public void mostrarVehiculoMenosEconomico() {
-        Vehiculo vehiculoMasCaro=getVehiculoMenosEconomico();
-        System.out.println("Vehiculo mas caro: "+marcaYModeloDelVehiculo(vehiculoMasCaro));
+    public void mostrarVehiculosConPreciosDescendentemente(){
+        listaOrdenadaDeMayorAMenor().forEach(vehiculo -> vehiculo.presentarse());
     }
 
-    public void mostrarVehiculoConLetraYEnElModelo(){
-        Vehiculo vehiculoConY= vehiculos.stream().
-                filter(vehiculo -> vehiculo.getModelo().contains("Y"))
-                .collect(Collectors.toList()).get(0);
-        System.out.println("Vehiculo que contiene en el modelo la letra 'Y': "+marcaYModeloDelVehiculo(vehiculoConY)+" "+vehiculoConY.getPrecio());
-    }
-    private String marcaYModeloDelVehiculo(Vehiculo vehiculo){
-        return vehiculo.getMarca()+" "+vehiculo.getModelo();
-    }
-    public void mostrarAutos(){
-        vehiculos.forEach(vehiculo -> System.out.println(vehiculo.presentarse()));
-    }
-    public void mostrarVehiculosDeMayorAMenor() {
-        Vehiculo vehiculosOrdenados[] = new Vehiculo[vehiculos.size()];
-        List<Vehiculo> vehiculosPibote = new ArrayList<>();
-        vehiculos.forEach(vehiculo -> vehiculosPibote.add(vehiculo));
-        vehiculosPibote.remove(getVehiculoMenosEconomico());
-        vehiculosOrdenados[0]=getVehiculoMenosEconomico();
-        for (int i = 1; i < vehiculos.size() ; i++) {
-            Vehiculo vehiculoMasCaro = vehiculosPibote.get(0);
-            for (int j = 0; j < vehiculosPibote.size(); j++) {
-                if ((vehiculoMasCaro.getPrecio() < vehiculosPibote.get(j).getPrecio())) {
-                    vehiculoMasCaro = vehiculosPibote.get(j);
-                }
-            }
-            vehiculosOrdenados[i]=vehiculoMasCaro;
-            vehiculosPibote.remove(vehiculoMasCaro);
-        }
-        for(int i=0;i<vehiculos.size();i++)
-            System.out.println(marcaYModeloDelVehiculo(vehiculosOrdenados[i]));
-
-    }
 }
+
