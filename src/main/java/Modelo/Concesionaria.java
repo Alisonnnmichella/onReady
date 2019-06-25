@@ -60,23 +60,23 @@ public class Concesionaria {
         vehiculos.forEach(vehiculo -> System.out.println(vehiculo.presentarse()));
     }
     public void mostrarVehiculosDeMayorAMenor() {
-        LinkedList vehiculosOrdenados= new LinkedList<>();
-        List<Vehiculo> vehiculosPibote=new ArrayList<>();
+        Vehiculo vehiculosOrdenados[] = new Vehiculo[vehiculos.size()];
+        List<Vehiculo> vehiculosPibote = new ArrayList<>();
         vehiculos.forEach(vehiculo -> vehiculosPibote.add(vehiculo));
         vehiculosPibote.remove(getVehiculoMenosEconomico());
-        vehiculosOrdenados.add(getVehiculoMenosEconomico());
-        for(int i=0;i<vehiculos.size()-1;i++){
-            Vehiculo vehiculoMasCaro=vehiculosPibote.get(0);
-            for(int j=0;j<vehiculosPibote.size();j++){
-                if((vehiculoMasCaro.getPrecio()<vehiculosPibote.get(j).getPrecio())){
-                    vehiculoMasCaro=vehiculosPibote.get(j);
+        vehiculosOrdenados[0]=getVehiculoMenosEconomico();
+        for (int i = 1; i < vehiculos.size() ; i++) {
+            Vehiculo vehiculoMasCaro = vehiculosPibote.get(0);
+            for (int j = 0; j < vehiculosPibote.size(); j++) {
+                if ((vehiculoMasCaro.getPrecio() < vehiculosPibote.get(j).getPrecio())) {
+                    vehiculoMasCaro = vehiculosPibote.get(j);
                 }
             }
-            vehiculosOrdenados.add(vehiculoMasCaro);
+            vehiculosOrdenados[i]=vehiculoMasCaro;
             vehiculosPibote.remove(vehiculoMasCaro);
         }
-
+        for(int i=0;i<vehiculos.size();i++)
+            System.out.println(marcaYModeloDelVehiculo(vehiculosOrdenados[i]));
 
     }
-
 }
